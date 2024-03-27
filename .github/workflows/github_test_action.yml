@@ -36,6 +36,7 @@ jobs:
           python -m pip install pytest pytest-split
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install .["all"]
+          if ${{ matrix.python-version == '3.12' }}; then python -m pip install setuptools; fi
           if ${{ matrix.python-version == '3.9' }}; then python -m pip install pypower; fi
           if ${{ matrix.python-version != '3.9' }}; then python -m pip install numba; fi
           if ${{ matrix.python-version == '3.8' || matrix.python-version == '3.10' }}; then python -m pip install lightsim2grid; fi
@@ -65,7 +66,7 @@ jobs:
 
   relying: # packages that rely on pandapower
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
@@ -83,6 +84,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         pip install .
         pip install matplotlib
+        if ${{ matrix.python-version == '3.12' }}; then python -m pip install setuptools; fi
         if ${{ matrix.python-version != '3.9' }}; then python -m pip install numba; fi
     - name: Install pandapipes and simbench
       run: |
